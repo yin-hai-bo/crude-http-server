@@ -131,7 +131,7 @@ static ATOM registerClass(HINSTANCE const inst, const TCHAR * const wndClass) {
 	return RegisterClassEx(&wcex);
 }
 
-static HWND createMainWindow(HINSTANCE const inst, TCHAR const * const className, int const cmdShow) {
+static HWND createMainWindow(HINSTANCE const inst, TCHAR const * const className, int const showCmd) {
 	TCHAR title[512];
 	LoadString(inst, IDS_APP_TITLE, title, sizeof(title) / sizeof(title[0]));
 
@@ -142,12 +142,16 @@ static HWND createMainWindow(HINSTANCE const inst, TCHAR const * const className
 	if (!wnd) {
 		return NULL;
 	}
-	ShowWindow(wnd, cmdShow);
+	ShowWindow(wnd, showCmd);
 	UpdateWindow(wnd);
 	return wnd;
 }
 
-int APIENTRY _tWinMain(HINSTANCE inst, HINSTANCE, LPTSTR cmdLine, int cmdShow) {
+int APIENTRY _tWinMain(
+	_In_ HINSTANCE inst,
+	_In_opt_ HINSTANCE,
+	_In_ LPTSTR,
+	_In_ int showCmd) {
 
 	static const TCHAR CLASS_NAME[] = _T("{7222A6D0-B6C7-4796-8C72-558718A50255}");
 	ATOM const registeredClass = registerClass(inst, CLASS_NAME);
@@ -157,7 +161,7 @@ int APIENTRY _tWinMain(HINSTANCE inst, HINSTANCE, LPTSTR cmdLine, int cmdShow) {
 
 	HWND const wnd = createMainWindow(inst, (TCHAR const *)registeredClass,
 #ifdef _DEBUG		
-		cmdShow
+		showCmd
 #else
 		SW_HIDE
 #endif
