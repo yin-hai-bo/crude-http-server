@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "HttpListener.h"
+#include "Logger.h"
 
 HttpListener::HttpListener()
     : sock_(INVALID_SOCKET)
@@ -48,6 +49,7 @@ bool HttpListener::Start(const char * address, uint16_t port) {
         this->sessions_.reserve(8);
         this->stopFlag_ = false;
         this->workThread_ = std::make_unique<std::thread>(&HttpListener::doAccept, this);
+        Logger::Append(_T("Listening started."));
         return true;
     } else {
         sock_.Close();

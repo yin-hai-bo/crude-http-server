@@ -2,7 +2,9 @@
 #include "resource.h"
 #include "TrayIcon.h"
 #include "Menu.h"
+#include "Logger.h"
 #include "HttpListener.h"
+#include <memory>
 
 #define MY_WM_TRAYICON (WM_USER + 1)
 
@@ -63,6 +65,20 @@ static bool onCommandMessage(HWND const wnd, const int wmId) {
 	return true;
 }
 
+static void onCreateMessage(HWND const wnd) {
+	auto h = ::CreateWindowEx(WS_EX_CLIENTEDGE, _T("EDIT"), _T(""),
+		WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_MULTILINE | ES_AUTOVSCROLL,
+		0, 0, 300, 200,
+		wnd, NULL, NULL, nullptr);
+	Logger::Init(h);
+}
+
+static void onSizeMessage(HWND const wnd) {
+	RECT rect;
+	::GetClientRect(wnd, &rect);
+	Logger::SetPosition(0, 0, rect.right - rect.left, rect.bottom - rect.top);
+}
+
 static void onPaintMessage(HWND const wnd) {
 	PAINTSTRUCT ps;
 	HDC const hdc = BeginPaint(wnd, &ps);
@@ -92,6 +108,12 @@ static void onMyTrayIcon(HWND wnd, LPARAM lParam) {
 
 static LRESULT wndProc(HWND const wnd, UINT const message, WPARAM const wParam, LPARAM const lParam) {
 	switch (message) {
+	case WM_CREATE:
+		onCreateMessage(wnd);
+		break;
+	case WM_SIZE:
+		onSizeMessage(wnd);
+		break;
 	case WM_COMMAND:
 		if (!onCommandMessage(wnd, LOWORD(wParam))) {
 			return DefWindowProc(wnd, message, wParam, lParam);
@@ -159,13 +181,7 @@ int APIENTRY _tWinMain(
 		return 0;
 	}
 
-	HWND const wnd = createMainWindow(inst, (TCHAR const *)registeredClass,
-#ifdef _DEBUG		
-		showCmd
-#else
-		SW_HIDE
-#endif
-	);
+	HWND const wnd = createMainWindow(inst, (TCHAR const *)registeredClass, showCmd);
 	if (!wnd) {
 		return 0;
 	}

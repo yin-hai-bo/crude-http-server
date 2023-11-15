@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\HttpListener.cpp" />
+    <ClCompile Include="src\Logger.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -173,6 +174,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\HttpListener.h" />
+    <ClInclude Include="src\Logger.h" />
     <ClInclude Include="src\Menu.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\RequestParser.h" />
