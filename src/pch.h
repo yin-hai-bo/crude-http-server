@@ -11,6 +11,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <cstdarg>
 #include <cassert>
 
 #include <memory>

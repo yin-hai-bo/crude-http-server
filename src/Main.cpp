@@ -196,7 +196,7 @@ int APIENTRY _tWinMain(
 	do {
 		TrayIcon trayIcon(wnd, MY_WM_TRAYICON);
 		HttpListener httpListener;
-		httpListener.Start("127.0.0.1", 7301);
+		httpListener.Start(_T("127.0.0.1"), 7301);
 
 		HACCEL const accelTable = LoadAccelerators(inst, MAKEINTRESOURCE(IDC_ACCEL));
 		MSG msg;

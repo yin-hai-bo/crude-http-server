@@ -13,7 +13,7 @@ public:
     ~HttpListener();
 
     bool IsRunning() const { return sock_.IsValid(); }
-    bool Start(const char * address, uint16_t port);
+    bool Start(const TCHAR * address, uint16_t port);
     void Close();
 
 private:
